@@ -9,23 +9,64 @@ from scipy import stats
 
 
 def take_shot(p: float) -> int:
+    """
+    Simulates a single shot with a given probability of success.
+
+    Parameters:
+    - p (float): Probability of a successful shot.
+
+    Returns:
+    - int: 1 if the shot is successful, 0 otherwise.
+    """
     return random.choices([1, 0], weights=[p, 1 - p])[0]
 
 
-def take_multiple_shots(n: int, p: float) -> list:
-    n_sucess = 0
+def take_multiple_shots(n: int, p: float) -> int:
+    """
+    Simulates multiple shots and counts the number of successful shots.
+
+    Parameters:
+    - n (int): Number of shots to simulate.
+    - p (float): Probability of a successful shot.
+
+    Returns:
+    - int: Number of successful shots out of the total simulated shots.
+    """
+    n_success = 0
     for _ in range(n):
-        n_sucess += take_shot(p)
-    return n_sucess
+        n_success += take_shot(p)
+    return n_success
 
 
 def percentage_formatter(x, pos):
+    """
+    Custom formatter for displaying values as percentages.
+
+    Parameters:
+    - x: The tick value.
+    - pos: The tick position.
+
+    Returns:
+    - str: Formatted string representing the percentage.
+    """
     return f"{x:.0%}"
 
 
 def calculate_binom_proba(
     n: int, k: int, p: float, method: Union["manual", "auto"]
 ) -> float:
+    """
+    Calculate the binomial probability using either the "manual" or "auto" method.
+
+    Parameters:
+    - n (int): Number of trials.
+    - k (int): Number of successful trials.
+    - p (float): Probability of success in a single trial.
+    - method (Union["manual", "auto"]): Method to use for calculation.
+
+    Returns:
+    - float: Calculated binomial probability.
+    """
     if method == "auto":
         return stats.binom.pmf(k, n, p)
     elif method == "manual":
@@ -36,6 +77,12 @@ def calculate_binom_proba(
 
 
 def plot_histogram(data):
+    """
+    Plot a histogram of the given data.
+
+    Parameters:
+    - data: The input data for the histogram.
+    """
     fig, ax = plt.subplots(figsize=(12, 8))
     sns.histplot(data=data, ax=ax, binwidth=1, binrange=(0, 11), stat="density")
     for p in ax.patches:
@@ -48,7 +95,7 @@ def plot_histogram(data):
             textcoords="offset points",
         )
     ax.set_title(
-        "Distribution of Successful Shots\n10.000 Samples Taking 10 Shots Each"
+        "Distribution of Successful Shots\n10,000 Samples Taking 10 Shots Each"
     )
     ax.set_ylim((0.0, 0.4))
     ax.yaxis.set_major_formatter(FuncFormatter(percentage_formatter))
