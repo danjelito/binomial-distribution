@@ -1,6 +1,6 @@
 import random
 from math import factorial
-from typing import Union
+from typing import Literal
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -53,7 +53,7 @@ def percentage_formatter(x, pos):
 
 
 def calculate_binom_proba(
-    n: int, k: int, p: float, method: Union["manual", "auto"]
+    n: int, k: int, p: float, method: Literal["manual", "auto"]
 ) -> float:
     """
     Calculate the binomial probability using either the "manual" or "auto" method.
@@ -115,6 +115,7 @@ if __name__ == "__main__":
     plot_histogram(results)
 
     # probability of exacty 7 successes
+    # this should be the same with what is in the plot
     k = 7  # 7 success
     print(calculate_binom_proba(n, k, p, "manual"))
     print(calculate_binom_proba(n, k, p, "auto"))
